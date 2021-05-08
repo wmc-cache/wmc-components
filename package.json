@@ -19,8 +19,8 @@
       "pre-commit": "npm run lint && npm run test"
     }
   },
-  "main": "dist/lego-bricks.umd.js",
-  "module": "dist/lego-bricks.esm.js",
+  "main": "dist/wmc-components.umd.js",
+  "module": "dist/wmc-components.esm.js",
   "files": [
     "dist"
   ],
