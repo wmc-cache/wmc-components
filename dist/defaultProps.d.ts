@@ -1,3 +1,4 @@
+export declare const emitter: import("mitt").Emitter;
 interface RuleProp {
     type: "required" | "email" | "custom" | "range";
     message?: string;

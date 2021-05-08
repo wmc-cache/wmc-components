@@ -1,8 +1,9 @@
-/* eslints disable  */
-
 import { without, mapValues, pick } from 'lodash-es';
-import { computed, defineComponent, openBlock, createBlock, resolveDynamicComponent, createTextVNode, toDisplayString, withScopeId, withModifiers, withDirectives, createVNode, vModelText } from 'vue';
+import { computed, defineComponent, openBlock, createBlock, resolveDynamicComponent, createTextVNode, toDisplayString, withScopeId, withModifiers, onMounted, withDirectives, createVNode, vModelText, onUnmounted, renderSlot } from 'vue';
 
+function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
+
+const emitter = mitt();
 const commonDefaultProps = {
     // actions
     actionType: '',
@@ -107,16 +108,16 @@ var script = defineComponent({
 const _withId = /*#__PURE__*/withScopeId("data-v-6bf95b7a");
 
 const render = /*#__PURE__*/_withId((_ctx, _cache, $props, $setup, $data, $options) => {
-    return (openBlock(), createBlock(resolveDynamicComponent(_ctx.tag), {
-        style: _ctx.styleProps,
-        class: "l-text-component",
-        onClick: _ctx.handleClick
-    }, {
-        default: _withId(() => [
-            createTextVNode(toDisplayString(_ctx.text), 1 /* TEXT */)
-        ]),
-        _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["style", "onClick"]))
+  return (openBlock(), createBlock(resolveDynamicComponent(_ctx.tag), {
+    style: _ctx.styleProps,
+    class: "l-text-component",
+    onClick: _ctx.handleClick
+  }, {
+    default: _withId(() => [
+      createTextVNode(toDisplayString(_ctx.text), 1 /* TEXT */)
+    ]),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["style", "onClick"]))
 });
 
 script.render = render;
@@ -148,12 +149,12 @@ var script$1 = defineComponent({
 const _withId$1 = /*#__PURE__*/withScopeId("data-v-1e970aa2");
 
 const render$1 = /*#__PURE__*/_withId$1((_ctx, _cache, $props, $setup, $data, $options) => {
-    return (openBlock(), createBlock("img", {
-        style: _ctx.styleProps,
-        class: "l-image-component",
-        onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"])),
-        src: _ctx.src
-    }, null, 12 /* STYLE, PROPS */, ["src"]))
+  return (openBlock(), createBlock("img", {
+    style: _ctx.styleProps,
+    class: "l-image-component",
+    onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"])),
+    src: _ctx.src
+  }, null, 12 /* STYLE, PROPS */, ["src"]))
 });
 
 script$1.render = render$1;
@@ -183,11 +184,11 @@ var script$2 = defineComponent({
 });
 
 function render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    return (openBlock(), createBlock("div", {
-        style: _ctx.styleProps,
-        class: "l-shape-component",
-        onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"]))
-    }, null, 4 /* STYLE */))
+  return (openBlock(), createBlock("div", {
+    style: _ctx.styleProps,
+    class: "l-shape-component",
+    onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"]))
+  }, null, 4 /* STYLE */))
 }
 
 script$2.render = render$2;
@@ -225,19 +226,22 @@ var script$3 = defineComponent({
                 console.log("是否通过", allPassed);
             }
         };
+        onMounted(() => {
+            emitter.emit("form-item-created", validateInput);
+        });
         return { inputValueRef, validateInput };
     },
 });
 
 function render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    return (openBlock(), createBlock("div", null, [
-        withDirectives(createVNode("input", {
-            "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (_ctx.inputValueRef = $event)),
-            onBlur: _cache[2] || (_cache[2] = (...args) => (_ctx.validateInput && _ctx.validateInput(...args)))
-        }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [
-            [vModelText, _ctx.inputValueRef]
-        ])
-    ]))
+  return (openBlock(), createBlock("div", null, [
+    withDirectives(createVNode("input", {
+      "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (_ctx.inputValueRef = $event)),
+      onBlur: _cache[2] || (_cache[2] = (...args) => (_ctx.validateInput && _ctx.validateInput(...args)))
+    }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [
+      [vModelText, _ctx.inputValueRef]
+    ])
+  ]))
 }
 
 script$3.render = render$3;
@@ -247,10 +251,42 @@ script$3.install = (app) => {
     app.component(script$3.name, script$3);
 };
 
+var script$4 = defineComponent({
+    name: "w-from",
+    setup() {
+        const callback = (res) => {
+            console.log(res);
+        };
+        emitter.on("form-item-created", callback);
+        onUnmounted(() => {
+            emitter.off("form-item-created", callback);
+        });
+    },
+});
+
+const _hoisted_1 = /*#__PURE__*/createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
+
+function render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  return (openBlock(), createBlock("form", null, [
+    renderSlot(_ctx.$slots, "default"),
+    renderSlot(_ctx.$slots, "submit", {}, () => [
+      _hoisted_1
+    ])
+  ]))
+}
+
+script$4.render = render$4;
+script$4.__file = "src/components/WFrom/WFrom.vue";
+
+script$4.install = (app) => {
+    app.component(script$4.name, script$4);
+};
+
 const components = [
     script,
     script$1,
     script$2,
+    script$4,
     script$3
 ];
 const install = (app) => {
@@ -263,4 +299,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as LImage, script$2 as LShape, script as LText, script$3 as WInput, imageDefaultProps, imageStylePropsNames, install, shapeDefaultProps, shapeStylePropsNames, textDefaultProps, textStylePropNames };
+export { script$1 as LImage, script$2 as LShape, script as LText, script$4 as WFrom, script$3 as WInput, imageDefaultProps, imageStylePropsNames, install, shapeDefaultProps, shapeStylePropsNames, textDefaultProps, textStylePropNames };

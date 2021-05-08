@@ -4,8 +4,9 @@ import LText from './components/LText';
 import LImage from './components/LImage';
 import LShape from './components/LShape';
 import WInput from './components/WInput';
+import WFrom from './components/WFrom';
 declare const install: (app: App) => void;
-export { LText, LImage, LShape, WInput, install };
+export { LText, LImage, LShape, WInput, WFrom, install };
 declare const _default: {
     install: (app: App<any>) => void;
 };

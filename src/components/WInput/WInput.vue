@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+import { emitter } from "../../defaultProps";
 import { defineComponent, computed, PropType, onMounted } from "vue";
 import { RulesProp } from "../../defaultProps";
 export default defineComponent({
@@ -40,6 +41,9 @@ export default defineComponent({
 				console.log("是否通过", allPassed);
 			}
 		};
+		onMounted(() => {
+			emitter.emit("form-item-created", validateInput);
+		});
 
 		return { inputValueRef, validateInput };
 	},

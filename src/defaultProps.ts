@@ -1,4 +1,6 @@
 import { mapValues, without } from 'lodash-es'
+import mitt from "mitt";
+export const emitter = mitt();
 interface RuleProp {
   type: "required" | "email" | "custom" | "range";
   message?: string;
