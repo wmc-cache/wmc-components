@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts">
+import { RulesProp } from "../../defaultProps";
 import { emitter } from "../../defaultProps";
 import { defineComponent, computed, PropType, onMounted, reactive } from "vue";
-import { RulesProp } from "../../defaultProps";
 export default defineComponent({
 	name: "w-input",
 	props: {

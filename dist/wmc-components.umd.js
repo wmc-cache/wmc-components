@@ -50,158 +50,11 @@
       src: 'test.url',
       ...commonDefaultProps
   };
-  const shapeDefaultProps = {
-      backgroundColor: '',
-      ...commonDefaultProps
-  };
-  const isEditingProp = {
-      isEditing: {
-          type: Boolean,
-          default: false
-      }
-  };
-  const textStylePropNames = lodashEs.without(Object.keys(textDefaultProps), 'actionType', 'url', 'text');
-  const imageStylePropsNames = lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src');
-  const shapeStylePropsNames = lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url');
-  const transformToComponentProps = (props) => {
-      const mapProps = lodashEs.mapValues(props, (item) => {
-          return {
-              type: item.constructor,
-              default: item
-          };
-      });
-      return { ...mapProps, ...isEditingProp };
-  };
+  lodashEs.without(Object.keys(textDefaultProps), 'actionType', 'url', 'text');
+  lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src');
+  lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url');
 
-  const useComponentCommon = (props, picks) => {
-      const styleProps = vue.computed(() => lodashEs.pick(props, picks));
-      const handleClick = () => {
-          if (props.actionType === 'url' && props.url && !props.isEditing) {
-              window.location.href = props.url;
-          }
-      };
-      return {
-          styleProps,
-          handleClick
-      };
-  };
-
-  const defaultProps = transformToComponentProps(textDefaultProps);
-  // array that contains style props
   var script = vue.defineComponent({
-      name: 'l-text',
-      props: {
-          tag: {
-              type: String,
-              default: 'div'
-          },
-          ...defaultProps
-      },
-      setup(props) {
-          // 重用并且简化
-          // 抽离并且获得 styleProps
-          const { styleProps, handleClick } = useComponentCommon(props, textStylePropNames);
-          return {
-              styleProps,
-              handleClick
-          };
-      }
-  });
-
-  const _withId = /*#__PURE__*/vue.withScopeId("data-v-6bf95b7a");
-
-  const render = /*#__PURE__*/_withId((_ctx, _cache, $props, $setup, $data, $options) => {
-    return (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(_ctx.tag), {
-      style: _ctx.styleProps,
-      class: "l-text-component",
-      onClick: _ctx.handleClick
-    }, {
-      default: _withId(() => [
-        vue.createTextVNode(vue.toDisplayString(_ctx.text), 1 /* TEXT */)
-      ]),
-      _: 1 /* STABLE */
-    }, 8 /* PROPS */, ["style", "onClick"]))
-  });
-
-  script.render = render;
-  script.__scopeId = "data-v-6bf95b7a";
-  script.__file = "src/components/LText/LText.vue";
-
-  script.install = (app) => {
-      app.component(script.name, script);
-  };
-
-  const defaultProps$1 = transformToComponentProps(imageDefaultProps);
-  // array that contains style props
-  var script$1 = vue.defineComponent({
-      name: 'l-image',
-      props: {
-          ...defaultProps$1
-      },
-      setup(props) {
-          // 重用并且简化
-          // 抽离并且获得 styleProps
-          const { styleProps, handleClick } = useComponentCommon(props, imageStylePropsNames);
-          return {
-              styleProps,
-              handleClick
-          };
-      }
-  });
-
-  const _withId$1 = /*#__PURE__*/vue.withScopeId("data-v-1e970aa2");
-
-  const render$1 = /*#__PURE__*/_withId$1((_ctx, _cache, $props, $setup, $data, $options) => {
-    return (vue.openBlock(), vue.createBlock("img", {
-      style: _ctx.styleProps,
-      class: "l-image-component",
-      onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"])),
-      src: _ctx.src
-    }, null, 12 /* STYLE, PROPS */, ["src"]))
-  });
-
-  script$1.render = render$1;
-  script$1.__scopeId = "data-v-1e970aa2";
-  script$1.__file = "src/components/LImage/LImage.vue";
-
-  script$1.install = (app) => {
-      app.component(script$1.name, script$1);
-  };
-
-  const defaultProps$2 = transformToComponentProps(shapeDefaultProps);
-  // array that contains style props
-  var script$2 = vue.defineComponent({
-      name: 'l-shape',
-      props: {
-          ...defaultProps$2
-      },
-      setup(props) {
-          // 重用并且简化
-          // 抽离并且获得 styleProps
-          const { styleProps, handleClick } = useComponentCommon(props, shapeStylePropsNames);
-          return {
-              styleProps,
-              handleClick
-          };
-      }
-  });
-
-  function render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    return (vue.openBlock(), vue.createBlock("div", {
-      style: _ctx.styleProps,
-      class: "l-shape-component",
-      onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => (_ctx.handleClick && _ctx.handleClick(...args)), ["prevent"]))
-    }, null, 4 /* STYLE */))
-  }
-
-  script$2.render = render$2;
-  script$2.__file = "src/components/LShape/LShape.vue";
-
-  script$2.install = (app) => {
-      app.component(script$2.name, script$2);
-  };
-
-  var script$3 = vue.defineComponent({
       name: "w-input",
       props: {
           value: String,
@@ -253,7 +106,7 @@
       },
   });
 
-  const _withId$2 = /*#__PURE__*/vue.withScopeId("data-v-d4a7f3a2");
+  const _withId = /*#__PURE__*/vue.withScopeId("data-v-d4a7f3a2");
 
   vue.pushScopeId("data-v-d4a7f3a2");
   const _hoisted_1 = {
@@ -262,7 +115,7 @@
   };
   vue.popScopeId();
 
-  const render$3 = /*#__PURE__*/_withId$2((_ctx, _cache, $props, $setup, $data, $options) => {
+  const render = /*#__PURE__*/_withId((_ctx, _cache, $props, $setup, $data, $options) => {
     return (vue.openBlock(), vue.createBlock("div", null, [
       vue.withDirectives(vue.createVNode("input", vue.mergeProps({
         "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (_ctx.inputValueRef = $event)),
@@ -277,15 +130,15 @@
     ]))
   });
 
-  script$3.render = render$3;
-  script$3.__scopeId = "data-v-d4a7f3a2";
-  script$3.__file = "src/components/WInput/WInput.vue";
+  script.render = render;
+  script.__scopeId = "data-v-d4a7f3a2";
+  script.__file = "src/components/WInput/WInput.vue";
 
-  script$3.install = (app) => {
-      app.component(script$3.name, script$3);
+  script.install = (app) => {
+      app.component(script.name, script);
   };
 
-  var script$4 = vue.defineComponent({
+  var script$1 = vue.defineComponent({
       name: "w-form",
       emits: ["form-submit-result"],
       setup(props, context) {
@@ -309,7 +162,7 @@
 
   const _hoisted_1$1 = /*#__PURE__*/vue.createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
 
-  function render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  function render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return (vue.openBlock(), vue.createBlock("form", null, [
       vue.renderSlot(_ctx.$slots, "default"),
       vue.renderSlot(_ctx.$slots, "submit", {}, () => [
@@ -318,19 +171,16 @@
     ]))
   }
 
-  script$4.render = render$4;
-  script$4.__file = "src/components/WForm/WForm.vue";
+  script$1.render = render$1;
+  script$1.__file = "src/components/WForm/WForm.vue";
 
-  script$4.install = (app) => {
-      app.component(script$4.name, script$4);
+  script$1.install = (app) => {
+      app.component(script$1.name, script$1);
   };
 
   const components = [
-      script,
       script$1,
-      script$2,
-      script$4,
-      script$3
+      script
   ];
   const install = (app) => {
       components.forEach(component => {
@@ -341,19 +191,10 @@
       install
   };
 
-  exports.LImage = script$1;
-  exports.LShape = script$2;
-  exports.LText = script;
-  exports.WForm = script$4;
-  exports.WInput = script$3;
+  exports.WForm = script$1;
+  exports.WInput = script;
   exports.default = index;
-  exports.imageDefaultProps = imageDefaultProps;
-  exports.imageStylePropsNames = imageStylePropsNames;
   exports.install = install;
-  exports.shapeDefaultProps = shapeDefaultProps;
-  exports.shapeStylePropsNames = shapeStylePropsNames;
-  exports.textDefaultProps = textDefaultProps;
-  exports.textStylePropNames = textStylePropNames;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

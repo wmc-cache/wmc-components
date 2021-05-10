@@ -1,5 +1,5 @@
-import { PropType } from "vue";
 import { RulesProp } from "../../defaultProps";
+import { PropType } from "vue";
 declare const _default: import("vue").DefineComponent<{
     value: StringConstructor;
     rules: PropType<RulesProp>;
