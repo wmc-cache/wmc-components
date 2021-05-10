@@ -1,3 +1,4 @@
+/* eslints disable  */
 import { App } from 'vue'
 export {
   textDefaultProps, textStylePropNames, TextComponentProps,
@@ -10,13 +11,13 @@ import LText from './components/LText'
 import LImage from './components/LImage'
 import LShape from './components/LShape'
 import WInput from './components/WInput'
-import WFrom from './components/WFrom'
+import WForm from './components/WForm'
 
 const components = [
   LText,
   LImage,
   LShape,
-  WFrom,
+  WForm,
   WInput
 ]
 
@@ -31,7 +32,7 @@ export {
   LImage,
   LShape,
   WInput,
-  WFrom,
+  WForm,
   install
 }
 export default {

@@ -211,43 +211,74 @@
           const inputValueRef = vue.computed({
               get: () => props.value || "",
               set: (val) => {
-                  //console.log(val);
                   context.emit("update:value", val);
               },
+          });
+          const inputRef = vue.reactive({
+              error: false,
+              message: "",
           });
           const validateInput = () => {
               if (props.rules) {
                   const allPassed = props.rules.every((rule) => {
                       let passed = true;
+                      inputRef.message = rule.message || "";
                       switch (rule.type) {
                           case "required":
                               passed = inputValueRef.value.trim() !== "";
                               break;
+                          case "range": {
+                              const { min, max } = rule;
+                              if (min && inputValueRef.value.trim().length < min.length) {
+                                  passed = false;
+                                  inputRef.message = min.message;
+                              }
+                              if (max && inputValueRef.value.trim().length > max.length) {
+                                  passed = false;
+                                  inputRef.message = max.message;
+                              }
+                              break;
+                          }
                       }
                       return passed;
                   });
-                  console.log("是否通过", allPassed);
+                  inputRef.error = !allPassed;
+                  return allPassed;
               }
           };
           vue.onMounted(() => {
               emitter.emit("form-item-created", validateInput);
           });
-          return { inputValueRef, validateInput };
+          return { inputValueRef, validateInput, inputRef };
       },
   });
 
-  function render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  const _withId$2 = /*#__PURE__*/vue.withScopeId("data-v-d4a7f3a2");
+
+  vue.pushScopeId("data-v-d4a7f3a2");
+  const _hoisted_1 = {
+    key: 0,
+    class: "errorMessageStyle"
+  };
+  vue.popScopeId();
+
+  const render$3 = /*#__PURE__*/_withId$2((_ctx, _cache, $props, $setup, $data, $options) => {
     return (vue.openBlock(), vue.createBlock("div", null, [
-      vue.withDirectives(vue.createVNode("input", {
+      vue.withDirectives(vue.createVNode("input", vue.mergeProps({
         "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (_ctx.inputValueRef = $event)),
+        class: {'invalid': _ctx.inputRef.error},
         onBlur: _cache[2] || (_cache[2] = (...args) => (_ctx.validateInput && _ctx.validateInput(...args)))
-      }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [
-        [vue.vModelText, _ctx.inputValueRef]
-      ])
+      }, _ctx.$attrs), null, 16 /* FULL_PROPS */), [
+        [vue.vModelDynamic, _ctx.inputValueRef]
+      ]),
+      (_ctx.inputRef.error)
+        ? (vue.openBlock(), vue.createBlock("div", _hoisted_1, vue.toDisplayString(_ctx.inputRef.message), 1 /* TEXT */))
+        : vue.createCommentVNode("v-if", true)
     ]))
-  }
+  });
 
   script$3.render = render$3;
+  script$3.__scopeId = "data-v-d4a7f3a2";
   script$3.__file = "src/components/WInput/WInput.vue";
 
   script$3.install = (app) => {
@@ -255,31 +286,40 @@
   };
 
   var script$4 = vue.defineComponent({
-      name: "w-from",
-      setup() {
+      name: "w-form",
+      emits: ["form-submit-result"],
+      setup(props, context) {
+          const funcArr = [];
           const callback = (res) => {
-              console.log(res);
+              if (res) {
+                  funcArr.push(res);
+              }
+          };
+          const submit = () => {
+              const result = funcArr.map((func) => func()).every((result) => result);
+              context.emit("form-submit-result", result);
           };
           emitter.on("form-item-created", callback);
           vue.onUnmounted(() => {
               emitter.off("form-item-created", callback);
           });
+          return { submit };
       },
   });
 
-  const _hoisted_1 = /*#__PURE__*/vue.createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
+  const _hoisted_1$1 = /*#__PURE__*/vue.createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
 
   function render$4(_ctx, _cache, $props, $setup, $data, $options) {
     return (vue.openBlock(), vue.createBlock("form", null, [
       vue.renderSlot(_ctx.$slots, "default"),
       vue.renderSlot(_ctx.$slots, "submit", {}, () => [
-        _hoisted_1
+        _hoisted_1$1
       ])
     ]))
   }
 
   script$4.render = render$4;
-  script$4.__file = "src/components/WFrom/WFrom.vue";
+  script$4.__file = "src/components/WForm/WForm.vue";
 
   script$4.install = (app) => {
       app.component(script$4.name, script$4);
@@ -304,7 +344,7 @@
   exports.LImage = script$1;
   exports.LShape = script$2;
   exports.LText = script;
-  exports.WFrom = script$4;
+  exports.WForm = script$4;
   exports.WInput = script$3;
   exports.default = index;
   exports.imageDefaultProps = imageDefaultProps;

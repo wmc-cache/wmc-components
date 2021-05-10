@@ -1,1 +1,2 @@
-/* eslints disable  */
+# wmc-components
+

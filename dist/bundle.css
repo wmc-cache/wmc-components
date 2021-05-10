@@ -4,8 +4,6 @@
   position: relative !important;
 }
 
-
-
 h2.l-text-component[data-v-6bf95b7a], p.l-text-component[data-v-6bf95b7a] {
   margin-bottom: 0;
 }
@@ -18,3 +16,12 @@ button.l-text-component[data-v-6bf95b7a] {
   white-space: pre-wrap;
   position: relative !important;
 }
+
+.invalid[data-v-d4a7f3a2] {
+	border: 1px solid red !important;
+}
+.errorMessageStyle[data-v-d4a7f3a2] {
+	color: red;
+	font-size: 12px;
+}
+

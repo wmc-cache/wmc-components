@@ -1,5 +1,5 @@
 import { without, mapValues, pick } from 'lodash-es';
-import { computed, defineComponent, openBlock, createBlock, resolveDynamicComponent, createTextVNode, toDisplayString, withScopeId, withModifiers, onMounted, withDirectives, createVNode, vModelText, onUnmounted, renderSlot } from 'vue';
+import { computed, defineComponent, openBlock, createBlock, resolveDynamicComponent, createTextVNode, toDisplayString, withScopeId, withModifiers, reactive, onMounted, pushScopeId, popScopeId, withDirectives, createVNode, mergeProps, vModelDynamic, createCommentVNode, onUnmounted, renderSlot } from 'vue';
 
 function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
 
@@ -208,43 +208,74 @@ var script$3 = defineComponent({
         const inputValueRef = computed({
             get: () => props.value || "",
             set: (val) => {
-                //console.log(val);
                 context.emit("update:value", val);
             },
+        });
+        const inputRef = reactive({
+            error: false,
+            message: "",
         });
         const validateInput = () => {
             if (props.rules) {
                 const allPassed = props.rules.every((rule) => {
                     let passed = true;
+                    inputRef.message = rule.message || "";
                     switch (rule.type) {
                         case "required":
                             passed = inputValueRef.value.trim() !== "";
                             break;
+                        case "range": {
+                            const { min, max } = rule;
+                            if (min && inputValueRef.value.trim().length < min.length) {
+                                passed = false;
+                                inputRef.message = min.message;
+                            }
+                            if (max && inputValueRef.value.trim().length > max.length) {
+                                passed = false;
+                                inputRef.message = max.message;
+                            }
+                            break;
+                        }
                     }
                     return passed;
                 });
-                console.log("是否通过", allPassed);
+                inputRef.error = !allPassed;
+                return allPassed;
             }
         };
         onMounted(() => {
             emitter.emit("form-item-created", validateInput);
         });
-        return { inputValueRef, validateInput };
+        return { inputValueRef, validateInput, inputRef };
     },
 });
 
-function render$3(_ctx, _cache, $props, $setup, $data, $options) {
+const _withId$2 = /*#__PURE__*/withScopeId("data-v-d4a7f3a2");
+
+pushScopeId("data-v-d4a7f3a2");
+const _hoisted_1 = {
+  key: 0,
+  class: "errorMessageStyle"
+};
+popScopeId();
+
+const render$3 = /*#__PURE__*/_withId$2((_ctx, _cache, $props, $setup, $data, $options) => {
   return (openBlock(), createBlock("div", null, [
-    withDirectives(createVNode("input", {
+    withDirectives(createVNode("input", mergeProps({
       "onUpdate:modelValue": _cache[1] || (_cache[1] = $event => (_ctx.inputValueRef = $event)),
+      class: {'invalid': _ctx.inputRef.error},
       onBlur: _cache[2] || (_cache[2] = (...args) => (_ctx.validateInput && _ctx.validateInput(...args)))
-    }, null, 544 /* HYDRATE_EVENTS, NEED_PATCH */), [
-      [vModelText, _ctx.inputValueRef]
-    ])
+    }, _ctx.$attrs), null, 16 /* FULL_PROPS */), [
+      [vModelDynamic, _ctx.inputValueRef]
+    ]),
+    (_ctx.inputRef.error)
+      ? (openBlock(), createBlock("div", _hoisted_1, toDisplayString(_ctx.inputRef.message), 1 /* TEXT */))
+      : createCommentVNode("v-if", true)
   ]))
-}
+});
 
 script$3.render = render$3;
+script$3.__scopeId = "data-v-d4a7f3a2";
 script$3.__file = "src/components/WInput/WInput.vue";
 
 script$3.install = (app) => {
@@ -252,31 +283,40 @@ script$3.install = (app) => {
 };
 
 var script$4 = defineComponent({
-    name: "w-from",
-    setup() {
+    name: "w-form",
+    emits: ["form-submit-result"],
+    setup(props, context) {
+        const funcArr = [];
         const callback = (res) => {
-            console.log(res);
+            if (res) {
+                funcArr.push(res);
+            }
+        };
+        const submit = () => {
+            const result = funcArr.map((func) => func()).every((result) => result);
+            context.emit("form-submit-result", result);
         };
         emitter.on("form-item-created", callback);
         onUnmounted(() => {
             emitter.off("form-item-created", callback);
         });
+        return { submit };
     },
 });
 
-const _hoisted_1 = /*#__PURE__*/createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
+const _hoisted_1$1 = /*#__PURE__*/createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
 
 function render$4(_ctx, _cache, $props, $setup, $data, $options) {
   return (openBlock(), createBlock("form", null, [
     renderSlot(_ctx.$slots, "default"),
     renderSlot(_ctx.$slots, "submit", {}, () => [
-      _hoisted_1
+      _hoisted_1$1
     ])
   ]))
 }
 
 script$4.render = render$4;
-script$4.__file = "src/components/WFrom/WFrom.vue";
+script$4.__file = "src/components/WForm/WForm.vue";
 
 script$4.install = (app) => {
     app.component(script$4.name, script$4);
@@ -299,4 +339,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as LImage, script$2 as LShape, script as LText, script$4 as WFrom, script$3 as WInput, imageDefaultProps, imageStylePropsNames, install, shapeDefaultProps, shapeStylePropsNames, textDefaultProps, textStylePropNames };
+export { script$1 as LImage, script$2 as LShape, script as LText, script$4 as WForm, script$3 as WInput, imageDefaultProps, imageStylePropsNames, install, shapeDefaultProps, shapeStylePropsNames, textDefaultProps, textStylePropNames };
