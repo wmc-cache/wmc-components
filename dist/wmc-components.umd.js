@@ -54,6 +54,7 @@
   lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src');
   lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url');
 
+  const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   var script = vue.defineComponent({
       name: "w-input",
       props: {
@@ -92,6 +93,12 @@
                               }
                               break;
                           }
+                          case "email":
+                              passed = emailReg.test(inputValueRef.value);
+                              break;
+                          case "custom":
+                              passed = rule.validator ? rule.validator() : true;
+                              break;
                       }
                       return passed;
                   });
