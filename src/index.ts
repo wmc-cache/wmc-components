@@ -4,7 +4,6 @@ export {
   RulesProp
 } from './defaultProps'
 
-
 import WInput from './components/WInput'
 import WForm from './components/WForm'
 
