@@ -4,4 +4,5 @@ WForm.install = (app: App) => {
   app.component(WForm.name, WForm)
 }
 
+
 export default WForm
