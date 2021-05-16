@@ -7,10 +7,12 @@ export {
 import WInput from './components/WInput'
 import WForm from './components/WForm'
 
+
 const components = [
   WForm,
   WInput
 ]
+
 
 const install = (app: App) => {
   components.forEach(component => {
