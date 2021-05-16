@@ -4,4 +4,5 @@ WInput.install = (app: App) => {
   app.component(WInput.name, WInput)
 }
 
+
 export default WInput
