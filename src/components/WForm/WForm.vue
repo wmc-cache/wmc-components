@@ -10,7 +10,6 @@
 <script lang="ts">
 import { defineComponent, onUnmounted } from "vue";
 import { emitter } from "../../defaultProps";
-
 type ValidateFunc = () => boolean;
 export default defineComponent({
 	name: "w-form",
