@@ -7,7 +7,7 @@
 			v-bind="$attrs"
 		/>
 		<div
-			class="errorMessageStyle"
+			:style="errorMessageStyleRef"
 			v-if="inputRef.error"
 		>{{inputRef.message}}</div>
 	</div>
@@ -18,11 +18,19 @@ import { RulesProp } from "../../defaultProps";
 import { emitter } from "../../defaultProps";
 import { defineComponent, computed, PropType, onMounted, reactive } from "vue";
 const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const errorMessageStyle: object = {
+	color: "red",
+	fontSize: "12px",
+};
 export default defineComponent({
 	name: "w-input",
 	props: {
 		value: String,
 		rules: Array as PropType<RulesProp>,
+		errorMessageStyle: {
+			type: Object,
+			default: errorMessageStyle,
+		},
 	},
 	setup(props, context) {
 		const inputValueRef = computed({
@@ -31,6 +39,7 @@ export default defineComponent({
 				context.emit("update:value", val);
 			},
 		});
+		const errorMessageStyleRef = computed(() => props.errorMessageStyle);
 
 		const inputRef = reactive({
 			error: false,
@@ -77,7 +86,12 @@ export default defineComponent({
 		onMounted(() => {
 			emitter.emit("form-item-created", validateInput);
 		});
-		return { inputValueRef, validateInput, inputRef };
+		return {
+			inputValueRef,
+			validateInput,
+			inputRef,
+			errorMessageStyleRef,
+		};
 	},
 });
 </script>

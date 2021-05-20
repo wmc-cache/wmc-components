@@ -1,65 +1,27 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('lodash-es'), require('vue')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'lodash-es', 'vue'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.LegoComponents = {}, global._, global.Vue));
-}(this, (function (exports, lodashEs, vue) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('vue')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'vue'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global['wmc-components'] = {}, global.Vue));
+}(this, (function (exports, vue) { 'use strict';
 
   function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
 
   const emitter = mitt();
-  const commonDefaultProps = {
-      // actions
-      actionType: '',
-      url: '',
-      // size
-      height: '',
-      width: '373px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      // border type
-      borderStyle: 'none',
-      borderColor: '#000',
-      borderWidth: '0',
-      borderRadius: '0',
-      // shadow and opacity
-      boxShadow: '0 0 0 #000000',
-      opacity: '1',
-      // position and x,y
-      position: 'absolute',
-      left: '0',
-      top: '0',
-      right: '0'
-  };
-  const textDefaultProps = {
-      // basic props - font styles
-      text: '正文内容',
-      fontSize: '14px',
-      fontFamily: '',
-      fontWeight: 'normal',
-      fontStyle: 'normal',
-      textDecoration: 'none',
-      lineHeight: '1',
-      textAlign: 'left',
-      color: '#000000',
-      backgroundColor: '',
-      ...commonDefaultProps
-  };
-  const imageDefaultProps = {
-      src: 'test.url',
-      ...commonDefaultProps
-  };
-  lodashEs.without(Object.keys(textDefaultProps), 'actionType', 'url', 'text');
-  lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src');
-  lodashEs.without(Object.keys(imageDefaultProps), 'actionType', 'url');
 
   const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  const errorMessageStyle = {
+      color: "red",
+      fontSize: "12px",
+  };
   var script = vue.defineComponent({
       name: "w-input",
       props: {
           value: String,
           rules: Array,
+          errorMessageStyle: {
+              type: Object,
+              default: errorMessageStyle,
+          },
       },
       setup(props, context) {
           const inputValueRef = vue.computed({
@@ -68,6 +30,7 @@
                   context.emit("update:value", val);
               },
           });
+          const errorMessageStyleRef = vue.computed(() => props.errorMessageStyle);
           const inputRef = vue.reactive({
               error: false,
               message: "",
@@ -109,18 +72,16 @@
           vue.onMounted(() => {
               emitter.emit("form-item-created", validateInput);
           });
-          return { inputValueRef, validateInput, inputRef };
+          return {
+              inputValueRef,
+              validateInput,
+              inputRef,
+              errorMessageStyleRef,
+          };
       },
   });
 
   const _withId = /*#__PURE__*/vue.withScopeId("data-v-d4a7f3a2");
-
-  vue.pushScopeId("data-v-d4a7f3a2");
-  const _hoisted_1 = {
-    key: 0,
-    class: "errorMessageStyle"
-  };
-  vue.popScopeId();
 
   const render = /*#__PURE__*/_withId((_ctx, _cache, $props, $setup, $data, $options) => {
     return (vue.openBlock(), vue.createBlock("div", null, [
@@ -132,7 +93,10 @@
         [vue.vModelDynamic, _ctx.inputValueRef]
       ]),
       (_ctx.inputRef.error)
-        ? (vue.openBlock(), vue.createBlock("div", _hoisted_1, vue.toDisplayString(_ctx.inputRef.message), 1 /* TEXT */))
+        ? (vue.openBlock(), vue.createBlock("div", {
+            key: 0,
+            style: _ctx.errorMessageStyleRef
+          }, vue.toDisplayString(_ctx.inputRef.message), 5 /* TEXT, STYLE */))
         : vue.createCommentVNode("v-if", true)
     ]))
   });
@@ -167,13 +131,13 @@
       },
   });
 
-  const _hoisted_1$1 = /*#__PURE__*/vue.createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
+  const _hoisted_1 = /*#__PURE__*/vue.createVNode("button", { type: "submit" }, "提交", -1 /* HOISTED */);
 
   function render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return (vue.openBlock(), vue.createBlock("form", null, [
       vue.renderSlot(_ctx.$slots, "default"),
       vue.renderSlot(_ctx.$slots, "submit", {}, () => [
-        _hoisted_1$1
+        _hoisted_1
       ])
     ]))
   }
