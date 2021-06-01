@@ -149,9 +149,61 @@
       app.component(script$1.name, script$1);
   };
 
+  var script$2 = vue.defineComponent({
+  	name: "WTokenImg",
+  	props: {
+  		authSrc: {
+  			type: String,
+  			required: false,
+  			default: "",
+  		},
+  		token: {
+  			type: String,
+  			required: false,
+  			default: null,
+  		},
+  	},
+  	setup(props) {
+  		const imgRef = vue.ref();
+  		const request = new XMLHttpRequest();
+  		request.responseType = "blob";
+  		request.open("get", props.authSrc, true);
+  		if (props.token) {
+  			request.setRequestHeader("Authorization", props.token);
+  		}
+  		request.onreadystatechange = (e) => {
+  			if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+  				imgRef.value.src = URL.createObjectURL(request.response);
+  				imgRef.value.onload = () => {
+  					URL.revokeObjectURL(imgRef.value.src);
+  				};
+  			}
+  		};
+  		request.send(null);
+
+  		return {
+  			imgRef,
+  		};
+  	},
+  });
+
+  const _hoisted_1$1 = { ref: "imgRef" };
+
+  function render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    return (vue.openBlock(), vue.createBlock("img", _hoisted_1$1, null, 512 /* NEED_PATCH */))
+  }
+
+  script$2.render = render$2;
+  script$2.__file = "src/components/WTokenImg/WTokenImg.vue";
+
+  script$2.install = (app) => {
+      app.component(script$2.name, script$2);
+  };
+
   const components = [
       script$1,
-      script
+      script,
+      script$2
   ];
   const install = (app) => {
       components.forEach(component => {
@@ -164,6 +216,7 @@
 
   exports.WForm = script$1;
   exports.WInput = script;
+  exports.WTokenImg = script$2;
   exports.default = index;
   exports.install = install;
 

@@ -6,11 +6,12 @@ export {
 
 import WInput from './components/WInput'
 import WForm from './components/WForm'
-
+import WTokenImg from "./components/WTokenImg"
 
 const components = [
   WForm,
-  WInput
+  WInput,
+  WTokenImg
 ]
 
 
@@ -23,7 +24,8 @@ const install = (app: App) => {
 export {
   WInput,
   WForm,
-  install
+  install,
+  WTokenImg
 }
 export default {
   install

@@ -1,4 +1,4 @@
-import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot } from 'vue';
+import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot, ref } from 'vue';
 
 function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
 
@@ -145,9 +145,61 @@ script$1.install = (app) => {
     app.component(script$1.name, script$1);
 };
 
+var script$2 = defineComponent({
+	name: "WTokenImg",
+	props: {
+		authSrc: {
+			type: String,
+			required: false,
+			default: "",
+		},
+		token: {
+			type: String,
+			required: false,
+			default: null,
+		},
+	},
+	setup(props) {
+		const imgRef = ref();
+		const request = new XMLHttpRequest();
+		request.responseType = "blob";
+		request.open("get", props.authSrc, true);
+		if (props.token) {
+			request.setRequestHeader("Authorization", props.token);
+		}
+		request.onreadystatechange = (e) => {
+			if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+				imgRef.value.src = URL.createObjectURL(request.response);
+				imgRef.value.onload = () => {
+					URL.revokeObjectURL(imgRef.value.src);
+				};
+			}
+		};
+		request.send(null);
+
+		return {
+			imgRef,
+		};
+	},
+});
+
+const _hoisted_1$1 = { ref: "imgRef" };
+
+function render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  return (openBlock(), createBlock("img", _hoisted_1$1, null, 512 /* NEED_PATCH */))
+}
+
+script$2.render = render$2;
+script$2.__file = "src/components/WTokenImg/WTokenImg.vue";
+
+script$2.install = (app) => {
+    app.component(script$2.name, script$2);
+};
+
 const components = [
     script$1,
-    script
+    script,
+    script$2
 ];
 const install = (app) => {
     components.forEach(component => {
@@ -159,4 +211,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as WForm, script as WInput, install };
+export { script$1 as WForm, script as WInput, script$2 as WTokenImg, install };
