@@ -7,7 +7,7 @@ export {
 import WInput from './components/WInput'
 import WForm from './components/WForm'
 import WTokenImg from "./components/WTokenImg"
-
+import useSwapNode from "./hooks/useSwapNode"
 const components = [
   WForm,
   WInput,
@@ -25,7 +25,8 @@ export {
   WInput,
   WForm,
   install,
-  WTokenImg
+  WTokenImg,
+  useSwapNode
 }
 export default {
   install

@@ -196,6 +196,10 @@ script$2.install = (app) => {
     app.component(script$2.name, script$2);
 };
 
+function useSwapNode() {
+    console.log("useSwapNode");
+}
+
 const components = [
     script$1,
     script,
@@ -211,4 +215,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as WForm, script as WInput, script$2 as WTokenImg, install };
+export { script$1 as WForm, script as WInput, script$2 as WTokenImg, install, useSwapNode };

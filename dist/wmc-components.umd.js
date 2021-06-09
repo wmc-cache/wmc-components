@@ -200,6 +200,10 @@
       app.component(script$2.name, script$2);
   };
 
+  function useSwapNode() {
+      console.log("useSwapNode");
+  }
+
   const components = [
       script$1,
       script,
@@ -219,6 +223,7 @@
   exports.WTokenImg = script$2;
   exports.default = index;
   exports.install = install;
+  exports.useSwapNode = useSwapNode;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
