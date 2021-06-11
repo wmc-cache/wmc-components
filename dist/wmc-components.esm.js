@@ -167,7 +167,7 @@ var script$2 = defineComponent({
 		if (props.token) {
 			request.setRequestHeader("Authorization", props.token);
 		}
-		request.onreadystatechange = (e) => {
+		request.onreadystatechange = () => {
 			if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
 				imgRef.value.src = URL.createObjectURL(request.response);
 				imgRef.value.onload = () => {
@@ -200,6 +200,17 @@ function useSwapNode() {
     console.log("useSwapNode");
 }
 
+function xhr(config) {
+    const { data = null, url, method = "get" } = config;
+    const request = new XMLHttpRequest();
+    request.open(method.toUpperCase(), url, true);
+    request.send(data);
+}
+
+function http(config) {
+    xhr(config);
+}
+
 const components = [
     script$1,
     script,
@@ -215,4 +226,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as WForm, script as WInput, script$2 as WTokenImg, install, useSwapNode };
+export { script$1 as WForm, script as WInput, script$2 as WTokenImg, http, install, useSwapNode };

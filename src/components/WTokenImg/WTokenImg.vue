@@ -26,7 +26,7 @@ export default defineComponent({
 		if (props.token) {
 			request.setRequestHeader("Authorization", props.token);
 		}
-		request.onreadystatechange = (e) => {
+		request.onreadystatechange = () => {
 			if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
 				imgRef.value.src = URL.createObjectURL(request.response);
 				imgRef.value.onload = () => {
