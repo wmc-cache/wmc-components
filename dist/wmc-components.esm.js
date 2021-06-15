@@ -196,8 +196,14 @@ script$2.install = (app) => {
     app.component(script$2.name, script$2);
 };
 
-function useSwapNode() {
-    console.log("useSwapNode");
+function swapHtmlElement(node1, node2) {
+    const afterNode2 = node2.nextElementSibling || null;
+    const parent = node2.parentNode || null;
+    if (!parent) {
+        throw Error('元素必须要有父节点');
+    }
+    node1.replaceWith(node2);
+    parent.insertBefore(node1, afterNode2);
 }
 
 function xhr(config) {
@@ -226,4 +232,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as WForm, script as WInput, script$2 as WTokenImg, http, install, useSwapNode };
+export { script$1 as WForm, script as WInput, script$2 as WTokenImg, http, install, swapHtmlElement };
