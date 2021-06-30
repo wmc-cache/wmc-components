@@ -1,9 +1,13 @@
 <template>
 	<form>
 		<slot name="default"></slot>
-		<slot name="submit">
-			<button type="submit">提交</button>
-		</slot>
+
+		<div @click.prevent="submit">
+			<slot name="submit">
+				<button type="submit">提交</button>
+			</slot>
+		</div>
+
 	</form>
 </template>
 

@@ -17,7 +17,8 @@
 import { RulesProp } from "../../defaultProps";
 import { emitter } from "../../defaultProps";
 import { defineComponent, computed, PropType, onMounted, reactive } from "vue";
-const emailReg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const emailReg =
+	/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const errorMessageStyle: object = {
 	color: "red",
 	fontSize: "12px",

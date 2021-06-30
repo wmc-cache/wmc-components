@@ -18,7 +18,7 @@ export function buildURL(url: string, params?: any): string {
     return url
   }
 
-  const parts = []
+  const parts: string[] = []
   //params{name:[123,123]}
   Object.keys(params).forEach(key => {
     const val = params[key]
@@ -45,7 +45,20 @@ export function buildURL(url: string, params?: any): string {
 
   })
 
+  const serializedParams = parts.join('&')
 
-  return ""
+  if (serializedParams) {
+    const markIndex = url.indexOf('#')
+    if (markIndex !== -1) {
+      url = url.slice(0, markIndex)
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
+  }
+
+
+  return url
 
 }
+
+

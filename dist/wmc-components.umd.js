@@ -136,8 +136,12 @@
   function render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return (vue.openBlock(), vue.createBlock("form", null, [
       vue.renderSlot(_ctx.$slots, "default"),
-      vue.renderSlot(_ctx.$slots, "submit", {}, () => [
-        _hoisted_1
+      vue.createVNode("div", {
+        onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => (_ctx.submit && _ctx.submit(...args)), ["prevent"]))
+      }, [
+        vue.renderSlot(_ctx.$slots, "submit", {}, () => [
+          _hoisted_1
+        ])
       ])
     ]))
   }

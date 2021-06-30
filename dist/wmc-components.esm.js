@@ -1,4 +1,4 @@
-import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot, ref } from 'vue';
+import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot, withModifiers, ref } from 'vue';
 
 function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
 
@@ -132,8 +132,12 @@ const _hoisted_1 = /*#__PURE__*/createVNode("button", { type: "submit" }, "æäº
 function render$1(_ctx, _cache, $props, $setup, $data, $options) {
   return (openBlock(), createBlock("form", null, [
     renderSlot(_ctx.$slots, "default"),
-    renderSlot(_ctx.$slots, "submit", {}, () => [
-      _hoisted_1
+    createVNode("div", {
+      onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.submit && _ctx.submit(...args)), ["prevent"]))
+    }, [
+      renderSlot(_ctx.$slots, "submit", {}, () => [
+        _hoisted_1
+      ])
     ])
   ]))
 }
