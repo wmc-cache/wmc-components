@@ -203,6 +203,104 @@
       app.component(script$2.name, script$2);
   };
 
+  var script$3 = vue.defineComponent({
+    props: {
+      showContent: {
+        type: String,
+        required: false,
+        default: '',
+      },
+      lines: {
+        type: Number,
+        required: false,
+        default: 1,
+      },
+      textAlign: {
+        type: String,
+        required: false,
+        default: 'center',
+      },
+      textStyle: {
+        type: String,
+        required: false,
+        default: '',
+      },
+    },
+    setup(props) {
+      const divRef = vue.ref();
+      const content = vue.ref('');
+      const btnFold = vue.ref(false); // 按钮默认显示展开
+      const textOver = vue.ref(false); // 文本是否超出n行
+      const changeStyle = vue.computed(() => {
+        let height;
+        if (textOver.value) {
+          height = btnFold.value ? 'min-content' : 23 * props.lines + 'px';
+        } else {
+          height = 'min-content';
+        }
+        return `-webkit-line-clamp:${props.lines};text-align:${props.textAlign};height:${height};${props.textStyle}`
+      });
+      const showBtnFun = () => {
+        vue.nextTick(() => {
+          const textDom = divRef.value;
+          if (!textDom) return
+          textOver.value = 23 * props.lines < textDom.scrollHeight;
+          btnFold.value = false;
+        });
+      };
+      vue.watch(
+        () => props.showContent,
+        () => {
+          content.value = props.showContent;
+          showBtnFun();
+        }
+        //   {
+        //     immediate: true,
+        //   }
+      );
+      const click = () => {
+        btnFold.value = !btnFold.value;
+      };
+      return {
+        content,
+        btnFold,
+        textOver,
+        click,
+        changeStyle,
+        divRef,
+      }
+    },
+  });
+
+  const _withId$1 = /*#__PURE__*/vue.withScopeId("data-v-552c861d");
+
+  const render$3 = /*#__PURE__*/_withId$1((_ctx, _cache, $props, $setup, $data, $options) => {
+    return (vue.openBlock(), vue.createBlock(vue.Fragment, null, [
+      vue.createVNode("div", {
+        class: _ctx.textOver && !_ctx.btnFold ? 'inner over' : 'inner',
+        style: _ctx.changeStyle,
+        ref: "divRef"
+      }, [
+        vue.createVNode("pre", null, vue.toDisplayString(_ctx.content), 1 /* TEXT */)
+      ], 6 /* CLASS, STYLE */),
+      (_ctx.textOver)
+        ? (vue.openBlock(), vue.createBlock("span", {
+            key: 0,
+            class: "btn",
+            onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => (_ctx.click && _ctx.click(...args)), ["stop"]))
+          }, vue.toDisplayString(_ctx.btnFold ? '收起' : '展开'), 1 /* TEXT */))
+        : vue.createCommentVNode("v-if", true)
+    ], 64 /* STABLE_FRAGMENT */))
+  });
+
+  script$3.render = render$3;
+  script$3.__scopeId = "data-v-552c861d";
+  script$3.__file = "src/components/WTextOverFlow/WTextOverFlow.vue";
+
+  script$3.install = (app) => {
+      app.component(script$3.name, script$3);
+  };
+
   function swapHtmlElement(node1, node2) {
       const afterNode2 = node2.nextElementSibling || null;
       const parent = node2.parentNode || null;
@@ -228,7 +326,8 @@
   const components = [
       script$1,
       script,
-      script$2
+      script$2,
+      script$3
   ];
   const install = (app) => {
       components.forEach(component => {
@@ -241,6 +340,7 @@
 
   exports.WForm = script$1;
   exports.WInput = script;
+  exports.WTextOverFlow = script$3;
   exports.WTokenImg = script$2;
   exports.default = index;
   exports.http = http;

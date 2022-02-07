@@ -1,4 +1,4 @@
-import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot, withModifiers, ref } from 'vue';
+import { defineComponent, computed, reactive, onMounted, openBlock, createBlock, withDirectives, createVNode, mergeProps, vModelDynamic, toDisplayString, createCommentVNode, withScopeId, onUnmounted, renderSlot, withModifiers, ref, watch, nextTick, Fragment } from 'vue';
 
 function mitt(n){return {all:n=n||new Map,on:function(t,e){var i=n.get(t);i&&i.push(e)||n.set(t,[e]);},off:function(t,e){var i=n.get(t);i&&i.splice(i.indexOf(e)>>>0,1);},emit:function(t,e){(n.get(t)||[]).slice().map(function(n){n(e);}),(n.get("*")||[]).slice().map(function(n){n(t,e);});}}}
 
@@ -199,6 +199,104 @@ script$2.install = (app) => {
     app.component(script$2.name, script$2);
 };
 
+var script$3 = defineComponent({
+  props: {
+    showContent: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    lines: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
+    textAlign: {
+      type: String,
+      required: false,
+      default: 'center',
+    },
+    textStyle: {
+      type: String,
+      required: false,
+      default: '',
+    },
+  },
+  setup(props) {
+    const divRef = ref();
+    const content = ref('');
+    const btnFold = ref(false); // 按钮默认显示展开
+    const textOver = ref(false); // 文本是否超出n行
+    const changeStyle = computed(() => {
+      let height;
+      if (textOver.value) {
+        height = btnFold.value ? 'min-content' : 23 * props.lines + 'px';
+      } else {
+        height = 'min-content';
+      }
+      return `-webkit-line-clamp:${props.lines};text-align:${props.textAlign};height:${height};${props.textStyle}`
+    });
+    const showBtnFun = () => {
+      nextTick(() => {
+        const textDom = divRef.value;
+        if (!textDom) return
+        textOver.value = 23 * props.lines < textDom.scrollHeight;
+        btnFold.value = false;
+      });
+    };
+    watch(
+      () => props.showContent,
+      () => {
+        content.value = props.showContent;
+        showBtnFun();
+      }
+      //   {
+      //     immediate: true,
+      //   }
+    );
+    const click = () => {
+      btnFold.value = !btnFold.value;
+    };
+    return {
+      content,
+      btnFold,
+      textOver,
+      click,
+      changeStyle,
+      divRef,
+    }
+  },
+});
+
+const _withId$1 = /*#__PURE__*/withScopeId("data-v-552c861d");
+
+const render$3 = /*#__PURE__*/_withId$1((_ctx, _cache, $props, $setup, $data, $options) => {
+  return (openBlock(), createBlock(Fragment, null, [
+    createVNode("div", {
+      class: _ctx.textOver && !_ctx.btnFold ? 'inner over' : 'inner',
+      style: _ctx.changeStyle,
+      ref: "divRef"
+    }, [
+      createVNode("pre", null, toDisplayString(_ctx.content), 1 /* TEXT */)
+    ], 6 /* CLASS, STYLE */),
+    (_ctx.textOver)
+      ? (openBlock(), createBlock("span", {
+          key: 0,
+          class: "btn",
+          onClick: _cache[1] || (_cache[1] = withModifiers((...args) => (_ctx.click && _ctx.click(...args)), ["stop"]))
+        }, toDisplayString(_ctx.btnFold ? '收起' : '展开'), 1 /* TEXT */))
+      : createCommentVNode("v-if", true)
+  ], 64 /* STABLE_FRAGMENT */))
+});
+
+script$3.render = render$3;
+script$3.__scopeId = "data-v-552c861d";
+script$3.__file = "src/components/WTextOverFlow/WTextOverFlow.vue";
+
+script$3.install = (app) => {
+    app.component(script$3.name, script$3);
+};
+
 function swapHtmlElement(node1, node2) {
     const afterNode2 = node2.nextElementSibling || null;
     const parent = node2.parentNode || null;
@@ -224,7 +322,8 @@ function http(config) {
 const components = [
     script$1,
     script,
-    script$2
+    script$2,
+    script$3
 ];
 const install = (app) => {
     components.forEach(component => {
@@ -236,4 +335,4 @@ var index = {
 };
 
 export default index;
-export { script$1 as WForm, script as WInput, script$2 as WTokenImg, http, install, swapHtmlElement };
+export { script$1 as WForm, script as WInput, script$3 as WTextOverFlow, script$2 as WTokenImg, http, install, swapHtmlElement };

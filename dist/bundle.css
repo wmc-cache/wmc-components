@@ -1,5 +1,4 @@
 
-
 .invalid[data-v-d4a7f3a2] {
 	border: 1px solid red !important;
 }
@@ -8,3 +7,38 @@
 	font-size: 12px;
 }
 
+
+
+.wrap[data-v-552c861d] {
+  width: 100%;
+  min-height: 40px;
+}
+.over[data-v-552c861d] {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  /* 收起时添加的样式 */
+}
+.inner[data-v-552c861d] {
+  width: 100%;
+  /* height: 30px; */
+  line-height: 23px;
+  color: #606266;
+}
+.btn[data-v-552c861d] {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.45);
+  float: right;
+  cursor: pointer;
+  margin-top: 10px;
+  line-height: 10px;
+}
+pre[data-v-552c861d] {
+  margin: 0;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
