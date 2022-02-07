@@ -7,12 +7,14 @@ export {
 import WInput from './components/WInput'
 import WForm from './components/WForm'
 import WTokenImg from "./components/WTokenImg"
+import WTextOverFlow from './components/WTextOverFlow'
 import swapHtmlElement from "./help/swapHtmlElement"
 import http from "./http/index"
 const components = [
   WForm,
   WInput,
-  WTokenImg
+  WTokenImg,
+  WTextOverFlow
 ]
 
 
@@ -25,6 +27,7 @@ const install = (app: App) => {
 export {
   WInput,
   WForm,
+  WTextOverFlow,
   install,
   WTokenImg,
   swapHtmlElement,

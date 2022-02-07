@@ -6,17 +6,27 @@
       v-model:value="inputValueRef"
     ></w-input>
   </w-form>
+
+  <div style="width:100px">
+    <w-text-over-flow lines='1' textAlign="left" textStyle="color:red" :showContent="message"></w-text-over-flow>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import WForm from './components/WForm/WForm.vue'
 import WInput from './components/WInput/WInput.vue'
+import WTextOverFlow from './components/WTextOverFlow/WTextOverFlow.vue'
 const errorMessageStyle = { color: 'red', fontSize: '12px' }
+
 export default defineComponent({
-  components: { WInput, WForm },
+  components: { WInput, WForm, WTextOverFlow },
   name: 'App',
   setup() {
+    const message = ref('')
+    setTimeout(() => {
+      message.value = 'wwwwwwwwwwwwwwwww'
+    }, 0)
     const inputValueRef = ref('wmc')
     const inputRules = [
       {
@@ -43,7 +53,7 @@ export default defineComponent({
       //   message: '不是我的邮箱',
       // },
     ]
-    return { errorMessageStyle, inputRules, inputValueRef }
+    return { errorMessageStyle, inputRules, inputValueRef, message }
   },
 })
 </script>
